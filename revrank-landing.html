@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RevRank — Where Builds Get Ranked</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #E8271A;
+    --red-dark: #B01E12;
+    --red-glow: rgba(232, 39, 26, 0.15);
+    --black: #0A0A0A;
+    --surface: #111111;
+    --surface2: #1A1A1A;
+    --border: rgba(255,255,255,0.08);
+    --text: #F0EDE8;
+    --muted: #888580;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    color: var(--text);
+  }
+
+  .logo span { color: var(--red); }
+
+  .nav-cta {
+    background: var(--red);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--red-dark); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.1s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 12vw, 9rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+
+  .hero-title .accent { color: var(--red); }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 3rem;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.35s forwards;
+  }
+
+  /* WAITLIST FORM */
+  .waitlist-form {
+    display: flex;
+    gap: 0;
+    max-width: 480px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.5s forwards;
+  }
+
+  .waitlist-form input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-right: none;
+    color: var(--text);
+    padding: 0.9rem 1.25rem;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .waitlist-form input::placeholder { color: var(--muted); }
+  .waitlist-form input:focus { border-color: var(--red); }
+
+  .waitlist-form button {
+    background: var(--red);
+    color: white;
+    border: 1px solid var(--red);
+    padding: 0.9rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  .waitlist-form button:hover { background: var(--red-dark); border-color: var(--red-dark); }
+
+  .form-note {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.6s forwards;
+  }
+
+  .success-msg {
+    display: none;
+    padding: 1rem 1.25rem;
+    background: rgba(40, 180, 100, 0.1);
+    border: 1px solid rgba(40, 180, 100, 0.3);
+    color: #4fcc82;
+    font-size: 0.9rem;
+    max-width: 480px;
+    margin-top: 0.5rem;
+  }
+
+  /* COUNTER */
+  .counter-strip {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    background: var(--surface);
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.7s forwards;
+  }
+
+  .counter-strip p {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .counter-strip strong {
+    color: var(--red);
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  /* BG DECORATION */
+  .hero-bg-text {
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-display);
+    font-size: clamp(12rem, 30vw, 22rem);
+    color: rgba(255,255,255,0.025);
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+  }
+
+  /* HOW IT WORKS */
+  .section {
+    padding: 6rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 3.5rem;
+    line-height: 1;
+  }
+
+  /* SWIPE DEMO */
+  .swipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 5rem;
+  }
+
+  .swipe-card {
+    background: var(--surface);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: background 0.2s;
+  }
+
+  .swipe-card:hover { background: var(--surface2); }
+
+  .swipe-dir {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .swipe-card.up .swipe-dir { color: #4fcc82; }
+  .swipe-card.right .swipe-dir { color: #4aa8ff; }
+  .swipe-card.down .swipe-dir { color: var(--red); }
+  .swipe-card.left .swipe-dir { color: var(--muted); }
+
+  .swipe-pts {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .swipe-card.up .swipe-pts { color: #4fcc82; }
+  .swipe-card.right .swipe-pts { color: #4aa8ff; }
+  .swipe-card.down .swipe-pts { color: var(--red); }
+  .swipe-card.left .swipe-pts { color: var(--muted); }
+
+  .swipe-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  /* FEATURES */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .feature {
+    background: var(--surface);
+    padding: 2.5rem 2rem;
+    transition: background 0.2s;
+  }
+
+  .feature:hover { background: var(--surface2); }
+
+  .feature-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--red-glow);
+    border: 1px solid rgba(232,39,26,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .feature-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--red);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .feature h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .feature p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* LEADERBOARD PREVIEW */
+  .lb-preview {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-top: 5rem;
+  }
+
+  .lb-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .lb-header span {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .lb-header .tab-active {
+    color: var(--red);
+    border-bottom: 1px solid var(--red);
+    padding-bottom: 2px;
+  }
+
+  .lb-tabs { display: flex; gap: 1.5rem; }
+
+  .lb-row {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    gap: 1rem;
+    transition: background 0.15s;
+  }
+
+  .lb-row:last-child { border-bottom: none; }
+  .lb-row:hover { background: var(--surface2); }
+
+  .lb-rank {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--muted);
+    min-width: 28px;
+  }
+
+  .lb-rank.gold { color: #f5c842; }
+  .lb-rank.silver { color: #b0b8c4; }
+  .lb-rank.bronze { color: #cd7f32; }
+
+  .lb-car-img {
+    width: 60px;
+    height: 40px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .lb-car-img svg {
+    width: 36px;
+    height: 20px;
+    fill: var(--muted);
+    opacity: 0.5;
+  }
+
+  .lb-info { flex: 1; }
+
+  .lb-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .lb-tags { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
+
+  .tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+  }
+
+  .tag.german { border-color: rgba(232,39,26,0.4); color: var(--red); }
+
+  .lb-pts {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    text-align: right;
+  }
+
+  .lb-pts small {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* BOTTOM CTA */
+  .bottom-cta {
+    padding: 8rem 2rem;
+    text-align: center;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bottom-cta-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(232,39,26,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .bottom-cta h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .bottom-cta p {
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
+    position: relative;
+  }
+
+  .bottom-waitlist {
+    display: flex;
+    gap: 0;
+    max-width: 420px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .bottom-waitlist input {
+    flex: 1;
+    background: var(--black);
+    border: 1px solid var(--border);
+    border-right: none;
+    color: var(--text);
+    padding: 0.9rem 1.25rem;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .bottom-waitlist input::placeholder { color: var(--muted); }
+  .bottom-waitlist input:focus { border-color: var(--red); }
+
+  .bottom-waitlist button {
+    background: var(--red);
+    color: white;
+    border: 1px solid var(--red);
+    padding: 0.9rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  .bottom-waitlist button:hover { background: var(--red-dark); }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 600px) {
+    .waitlist-form, .bottom-waitlist { flex-direction: column; }
+    .waitlist-form input, .bottom-waitlist input { border-right: 1px solid var(--border); border-bottom: none; }
+    .lb-tabs { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Rev<span>Rank</span></div>
+  <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+</nav>
+
+<!-- HERO -->
+<div style="position: relative; overflow: hidden;">
+  <div class="hero-bg-text">REV</div>
+  <section class="hero" id="waitlist">
+    <p class="hero-eyebrow">Coming soon &mdash; Join the waitlist</p>
+    <h1 class="hero-title">Where<br>Builds Get<br><span class="accent">Ranked.</span></h1>
+    <p class="hero-sub">The social app for car enthusiasts. Post your build, swipe through others, and see where you stack up on the global leaderboard.</p>
+    <form class="waitlist-form" onsubmit="handleSubmit(event, 'hero-success')">
+      <input type="email" id="hero-email" placeholder="your@email.com" required>
+      <button type="submit">Get Early Access</button>
+    </form>
+    <p class="form-note">Free forever. No spam. First to know when we launch.</p>
+    <div class="success-msg" id="hero-success">You're on the list. We'll hit you when RevRank drops.</div>
+  </section>
+</div>
+
+<!-- COUNTER STRIP -->
+<div class="counter-strip">
+  <strong id="counter">—</strong>
+  <p>Enthusiasts already on the waitlist</p>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <p class="section-label reveal">How it works</p>
+  <h2 class="section-title reveal">Swipe. Rank.<br>Rise.</h2>
+
+  <div class="swipe-grid reveal">
+    <div class="swipe-card up">
+      <span class="swipe-dir">↑</span>
+      <span class="swipe-pts">+5</span>
+      <span class="swipe-label">Fire build</span>
+    </div>
+    <div class="swipe-card right">
+      <span class="swipe-dir">→</span>
+      <span class="swipe-pts">+1</span>
+      <span class="swipe-label">Solid</span>
+    </div>
+    <div class="swipe-card left">
+      <span class="swipe-dir">←</span>
+      <span class="swipe-pts">0</span>
+      <span class="swipe-label">Pass</span>
+    </div>
+    <div class="swipe-card down">
+      <span class="swipe-dir">↓</span>
+      <span class="swipe-pts">−5</span>
+      <span class="swipe-label">Not it</span>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features-grid reveal">
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M7 20l-4-4m0 0l4-4m-4 4h16M17 4l4 4m0 0l-4 4m4-4H5"/></svg>
+      </div>
+      <h3>Swipe to Rank</h3>
+      <p>Rate builds in seconds with a swipe. Up, down, left, right — each direction assigns points and shapes the global rankings.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/></svg>
+      </div>
+      <h3>Tag System</h3>
+      <p>Tag your build — drift, track, stance, German, JDM, American muscle. Tags power category-specific leaderboards.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      </div>
+      <h3>Leaderboards</h3>
+      <p>Global rankings plus tag-specific boards. Best German build? Top drift car? Best track setup? There's a board for it.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+      </div>
+      <h3>Collections</h3>
+      <p>Save builds to personal collections for inspiration. Planning a new build? Pull up saved references any time.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      </div>
+      <h3>Build Profiles</h3>
+      <p>Post your full build — photos, mods list, specs. Tell the story of your car and grow a following of people who get it.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <h3>Discovery Feed</h3>
+      <p>Swipe through a curated feed of builds filtered to what you care about. No algorithm noise — just cars.</p>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD PREVIEW -->
+  <div class="lb-preview reveal">
+    <div class="lb-header">
+      <div class="lb-tabs">
+        <span class="tab-active">Global</span>
+        <span>German</span>
+        <span>Track</span>
+        <span>Drift</span>
+      </div>
+      <span>Top Builds</span>
+    </div>
+
+    <div class="lb-row">
+      <div class="lb-rank gold">#1</div>
+      <div class="lb-car-img">
+        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><path d="M5 20 Q8 12 20 10 L40 10 Q52 10 55 20 L5 20Z" fill="currentColor"/><circle cx="15" cy="22" r="4" fill="currentColor"/><circle cx="45" cy="22" r="4" fill="currentColor"/></svg>
+      </div>
+      <div class="lb-info">
+        <div class="lb-name">@lowlife_kai — 2019 M3 Competition</div>
+        <div class="lb-tags">
+          <span class="tag german">German</span>
+          <span class="tag">Track</span>
+          <span class="tag">Modified</span>
+        </div>
+      </div>
+      <div class="lb-pts">4,820 <small>pts</small></div>
+    </div>
+
+    <div class="lb-row">
+      <div class="lb-rank silver">#2</div>
+      <div class="lb-car-img">
+        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><path d="M5 20 Q8 12 20 10 L40 10 Q52 10 55 20 L5 20Z" fill="currentColor"/><circle cx="15" cy="22" r="4" fill="currentColor"/><circle cx="45" cy="22" r="4" fill="currentColor"/></svg>
+      </div>
+      <div class="lb-info">
+        <div class="lb-name">@yokohama_rex — 2022 WRX STI</div>
+        <div class="lb-tags">
+          <span class="tag">JDM</span>
+          <span class="tag">Drift</span>
+        </div>
+      </div>
+      <div class="lb-pts">3,940 <small>pts</small></div>
+    </div>
+
+    <div class="lb-row">
+      <div class="lb-rank bronze">#3</div>
+      <div class="lb-car-img">
+        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><path d="M5 20 Q8 12 20 10 L40 10 Q52 10 55 20 L5 20Z" fill="currentColor"/><circle cx="15" cy="22" r="4" fill="currentColor"/><circle cx="45" cy="22" r="4" fill="currentColor"/></svg>
+      </div>
+      <div class="lb-info">
+        <div class="lb-name">@stance_nation_1 — 2018 Golf R</div>
+        <div class="lb-tags">
+          <span class="tag german">German</span>
+          <span class="tag">Stance</span>
+        </div>
+      </div>
+      <div class="lb-pts">3,210 <small>pts</small></div>
+    </div>
+
+    <div class="lb-row" style="opacity: 0.35; pointer-events: none;">
+      <div class="lb-rank">#4</div>
+      <div class="lb-car-img">
+        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><path d="M5 20 Q8 12 20 10 L40 10 Q52 10 55 20 L5 20Z" fill="currentColor"/><circle cx="15" cy="22" r="4" fill="currentColor"/><circle cx="45" cy="22" r="4" fill="currentColor"/></svg>
+      </div>
+      <div class="lb-info">
+        <div class="lb-name">Join to see more...</div>
+        <div class="lb-tags"><span class="tag">Your build could be here</span></div>
+      </div>
+      <div class="lb-pts">— <small>pts</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <div class="bottom-cta-bg"></div>
+  <h2>Your Build<br>Deserves <span style="color: var(--red);">Recognition.</span></h2>
+  <p>Be first in when RevRank launches.</p>
+  <form class="bottom-waitlist" onsubmit="handleSubmit(event, 'bottom-success')">
+    <input type="email" id="bottom-email" placeholder="your@email.com" required>
+    <button type="submit">Join Waitlist</button>
+  </form>
+  <div class="success-msg" id="bottom-success" style="margin: 0.75rem auto 0; text-align: left;">You're locked in. We'll reach out before launch.</div>
+</div>
+
+<footer>
+  <span class="logo" style="font-size: 1.1rem;">Rev<span style="color: var(--red);">Rank</span></span>
+  <span>&copy; 2026 RevRank. Coming soon.</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Animated counter (placeholder — wire to Supabase later)
+  let count = 0;
+  const target = 247;
+  const el = document.getElementById('counter');
+  const step = () => {
+    count += Math.ceil((target - count) / 8);
+    if (count >= target) { el.textContent = target.toLocaleString(); return; }
+    el.textContent = count.toLocaleString();
+    setTimeout(step, 40);
+  };
+  setTimeout(step, 800);
+
+  const SUPABASE_URL = 'https://gwsgonbkymbemwnvdzdn.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3c2dvbmJreW1iZW13bnZkemRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NDIwNTgsImV4cCI6MjA5MDExODA1OH0.fHfm5H2inKk39ae5FTFxthkZA9-57pJ3fGgSC-OcMrY';
+
+  async function handleSubmit(e, successId) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const input = e.target.querySelector('input');
+    const success = document.getElementById(successId);
+    const email = input.value.trim();
+
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ email })
+      });
+
+      if (res.ok || res.status === 201) {
+        e.target.style.display = 'none';
+        success.style.display = 'block';
+        const countEl = document.getElementById('counter');
+        if (countEl) countEl.textContent = (parseInt(countEl.textContent.replace(/,/g, '')) + 1).toLocaleString();
+      } else if (res.status === 409) {
+        btn.textContent = 'Already registered!';
+        btn.style.background = 'var(--muted)';
+      } else {
+        throw new Error('Failed');
+      }
+    } catch {
+      btn.textContent = 'Try again';
+      btn.disabled = false;
+      btn.style.background = 'var(--red)';
+    }
+  }
+</script>
+</body>
+</html>
