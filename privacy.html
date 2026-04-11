@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — RevRank</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #E8271A;
+    --red-dark: #B01E12;
+    --black: #0A0A0A;
+    --surface: #111111;
+    --border: rgba(255,255,255,0.08);
+    --text: #F0EDE8;
+    --muted: #888580;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.6;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--red); }
+
+  .nav-cta {
+    background: var(--red);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--red-dark); }
+
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 8rem 2rem 4rem;
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  .page-title .accent { color: var(--red); }
+
+  .effective-date {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 3rem;
+  }
+
+  .intro {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p, li {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1rem;
+  }
+
+  ul li {
+    padding-left: 1.25rem;
+    position: relative;
+  }
+
+  ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    width: 6px;
+    height: 6px;
+    background: var(--red);
+  }
+
+  .highlight-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box p {
+    margin-bottom: 0;
+  }
+
+  .contact-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .contact-box p { margin-bottom: 0.4rem; }
+
+  .contact-box a {
+    color: var(--red);
+    text-decoration: none;
+  }
+
+  .contact-box a:hover { text-decoration: underline; }
+
+  footer {
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  footer a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Rev<span>Rank</span></a>
+  <a href="index.html#waitlist" class="nav-cta">Join Waitlist</a>
+</nav>
+
+<div class="content">
+  <h1 class="page-title">Privacy <span class="accent">Policy</span></h1>
+  <p class="effective-date">Effective Date: April 11, 2026 &middot; Last Updated: April 11, 2026</p>
+
+  <p class="intro">
+    DRTAVIL LLC ("we," "us," or "our") operates the RevRank mobile application.
+    This Privacy Policy describes how we collect, use, and share information when you use the app.
+    By using RevRank, you agree to the collection and use of information as described in this policy.
+  </p>
+
+  <h2>1. Information We Collect</h2>
+
+  <h3>Information You Provide</h3>
+  <ul>
+    <li><strong>Account Information:</strong> Email address, username, and password when you register. Passwords are securely hashed and never stored in plain text.</li>
+    <li><strong>Profile Information:</strong> Bio, avatar photo, and social media handles (Instagram, TikTok, YouTube, website) you optionally provide.</li>
+    <li><strong>Build Content:</strong> Photos, titles, descriptions, and tags you upload when creating vehicle build posts.</li>
+    <li><strong>User-Generated Content:</strong> Comments you post on builds and collections you save.</li>
+  </ul>
+
+  <h3>Information Collected Automatically</h3>
+  <ul>
+    <li><strong>Usage Data:</strong> How you interact with the app, including swipe actions, builds viewed, and features used.</li>
+    <li><strong>Device Information:</strong> Device type, operating system version, and unique device identifiers for app functionality and diagnostics.</li>
+  </ul>
+
+  <div class="highlight-box">
+    <p><strong>What we do NOT collect:</strong> We do not collect precise location data, contacts, call logs, or browsing history. We do not use third-party advertising trackers.</p>
+  </div>
+
+  <h2>2. How We Use Your Information</h2>
+  <ul>
+    <li>Provide, maintain, and improve the app</li>
+    <li>Create and manage your account</li>
+    <li>Display your profile and builds to other users</li>
+    <li>Calculate build scores and leaderboard rankings based on community votes</li>
+    <li>Send service-related communications (e.g., account verification)</li>
+    <li>Detect, prevent, and address technical issues or abuse</li>
+  </ul>
+
+  <h2>3. How We Share Your Information</h2>
+
+  <h3>Public Information</h3>
+  <p>Your username, avatar, bio, social links, build photos, titles, descriptions, scores, and comments are visible to other RevRank users. This is core to the app's functionality as a social platform.</p>
+
+  <h3>Service Providers</h3>
+  <p>We use the following third-party services to operate the app:</p>
+  <ul>
+    <li><strong>Supabase</strong> — database, authentication, and file storage (hosted in the United States)</li>
+    <li><strong>Expo / EAS</strong> — app build and distribution infrastructure</li>
+  </ul>
+  <p>These providers process data on our behalf and are contractually obligated to protect your information.</p>
+
+  <div class="highlight-box">
+    <p><strong>We do not sell your data.</strong> We do not sell, rent, or trade your personal information to third parties for marketing purposes.</p>
+  </div>
+
+  <h3>Legal Requirements</h3>
+  <p>We may disclose your information if required by law or in response to valid legal process (e.g., a subpoena or court order).</p>
+
+  <h2>4. Data Storage &amp; Security</h2>
+  <p>Your data is stored on servers provided by Supabase, located in the United States. We use industry-standard security measures including:</p>
+  <ul>
+    <li>Encrypted authentication tokens stored in device secure storage</li>
+    <li>Row-level security policies on all database tables</li>
+    <li>HTTPS for all data transmission</li>
+  </ul>
+  <p>While we take reasonable measures to protect your information, no method of electronic storage or transmission is 100% secure.</p>
+
+  <h2>5. Data Retention</h2>
+  <p>We retain your account information and content for as long as your account is active. If you delete your account, we will delete your personal data within 30 days, except where retention is required by law.</p>
+  <p>Build photos stored in our system may be retained in backups for up to 90 days after deletion.</p>
+
+  <h2>6. Your Rights</h2>
+  <p>You may:</p>
+  <ul>
+    <li><strong>Update</strong> your profile information at any time through the app</li>
+    <li><strong>Delete</strong> your builds through the app</li>
+    <li><strong>Request deletion</strong> of your account and all associated data by contacting us</li>
+    <li><strong>Request a copy</strong> of your personal data by contacting us</li>
+  </ul>
+
+  <h2>7. Children's Privacy</h2>
+  <p>RevRank is not directed to children under the age of 13. We do not knowingly collect personal information from children under 13. If we learn that we have collected information from a child under 13, we will delete it promptly.</p>
+
+  <h2>8. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. We will notify you of material changes by posting the updated policy in the app or on our website. Your continued use of the app after changes are posted constitutes acceptance of the updated policy.</p>
+
+  <h2>9. Contact Us</h2>
+  <div class="contact-box">
+    <p><strong>DRTAVIL LLC</strong></p>
+    <p>Email: <a href="mailto:kameronweddle@icloud.com">kameronweddle@icloud.com</a></p>
+    <p>Website: <a href="https://revrank.info">revrank.info</a></p>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html" class="logo" style="font-size: 1.1rem;">Rev<span style="color: var(--red);">Rank</span></a>
+  <span>&copy; 2026 DRTAVIL LLC. All rights reserved.</span>
+</footer>
+
+</body>
+</html>

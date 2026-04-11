@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sponsor RevRank — Reach Car Enthusiasts</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #E8271A;
+    --red-dark: #B01E12;
+    --red-glow: rgba(232, 39, 26, 0.15);
+    --black: #0A0A0A;
+    --surface: #111111;
+    --surface2: #1A1A1A;
+    --border: rgba(255,255,255,0.08);
+    --text: #F0EDE8;
+    --muted: #888580;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --gold: #f5c842;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-left { display: flex; align-items: center; gap: 2.5rem; }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--red); }
+
+  .nav-link {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+
+  .nav-link:hover { color: var(--text); }
+  .nav-link.active { color: var(--red); }
+
+  .nav-cta {
+    background: var(--red);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--red-dark); }
+
+  /* HERO */
+  .hero {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10rem 2rem 6rem;
+    position: relative;
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display);
+    font-size: clamp(12rem, 30vw, 22rem);
+    color: rgba(255,255,255,0.02);
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.1s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+
+  .hero-title .accent { color: var(--red); }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 3rem;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.35s forwards;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    background: var(--red);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.5s forwards;
+  }
+
+  .hero-cta:hover { background: var(--red-dark); }
+
+  /* SECTIONS */
+  .section {
+    padding: 6rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    text-align: center;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 3.5rem;
+    line-height: 1;
+    text-align: center;
+  }
+
+  /* PRICING GRID */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .tier-card {
+    background: var(--surface);
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .tier-card:hover { background: var(--surface2); }
+
+  /* Apex accent */
+  .tier-card.apex { border-top: 2px solid var(--red); }
+
+  /* Redline accent */
+  .tier-card.redline { border-top: 2px solid var(--gold); }
+
+  .tier-badge {
+    display: inline-block;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    width: fit-content;
+  }
+
+  .tier-badge.standard { border: 1px solid var(--border); color: var(--muted); }
+  .tier-badge.popular { background: var(--red-glow); border: 1px solid rgba(232,39,26,0.3); color: var(--red); }
+  .tier-badge.premium { background: rgba(245,200,66,0.08); border: 1px solid rgba(245,200,66,0.3); color: var(--gold); }
+
+  .tier-name {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  .tier-tagline {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+
+  /* PRICE DISPLAY */
+  .price-display {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.15rem;
+  }
+
+  .price-amount {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  .price-period {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* EARLY ADOPTER BANNER */
+  .early-banner {
+    position: relative;
+    margin-top: 3rem;
+    padding: 2.5rem 2.5rem;
+    background: var(--surface);
+    border: 1px solid rgba(232,39,26,0.3);
+    overflow: hidden;
+  }
+
+  .early-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top left, rgba(232,39,26,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .early-banner-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .early-banner-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: var(--red-glow);
+    border: 1px solid rgba(232,39,26,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .early-banner-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--red);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .early-banner-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .early-banner-text h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 0.6rem;
+  }
+
+  .early-banner-text p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 520px;
+  }
+
+  @media (max-width: 600px) {
+    .early-banner-content { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+  }
+
+  /* FEATURES LIST */
+  .tier-features {
+    list-style: none;
+    flex: 1;
+    margin-bottom: 2rem;
+  }
+
+  .tier-features li {
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding: 0.4rem 0;
+    padding-left: 1.25rem;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .tier-features li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7rem;
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--red);
+    background: transparent;
+  }
+
+  .tier-features li.coming-soon { opacity: 0.5; font-style: italic; }
+
+  .tier-cta {
+    display: block;
+    text-align: center;
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    margin-top: auto;
+  }
+
+  .tier-cta.outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .tier-cta.outline:hover { border-color: var(--red); color: var(--red); }
+
+  .tier-cta.filled {
+    background: var(--red);
+    border: 1px solid var(--red);
+    color: white;
+  }
+
+  .tier-cta.filled:hover { background: var(--red-dark); border-color: var(--red-dark); }
+
+  .tier-cta.gold {
+    background: transparent;
+    border: 1px solid rgba(245,200,66,0.4);
+    color: var(--gold);
+  }
+
+  .tier-cta.gold:hover { background: rgba(245,200,66,0.08); }
+
+  /* WHY REVRANK */
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .value-card {
+    background: var(--surface);
+    padding: 2.5rem 2rem;
+    transition: background 0.2s;
+  }
+
+  .value-card:hover { background: var(--surface2); }
+
+  .value-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--red-glow);
+    border: 1px solid rgba(232,39,26,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .value-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--red);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .value-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .value-card p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* BOTTOM CTA */
+  .bottom-cta {
+    padding: 8rem 2rem;
+    text-align: center;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bottom-cta-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(232,39,26,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .bottom-cta h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .bottom-cta p {
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
+    position: relative;
+  }
+
+  .bottom-cta .hero-cta {
+    position: relative;
+    opacity: 1;
+    animation: none;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 900px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .nav-left { gap: 1.5rem; }
+    .nav-link { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a href="index.html" class="logo">Rev<span>Rank</span></a>
+    <a href="sponsors.html" class="nav-link active">Sponsors</a>
+  </div>
+  <a href="sponsors-apply.html" class="nav-cta">Become a Sponsor</a>
+</nav>
+
+<!-- HERO -->
+<div style="position: relative; overflow: hidden;">
+  <div class="hero-bg-text">ADS</div>
+  <section class="hero">
+    <p class="hero-eyebrow">RevRank for Brands</p>
+    <h1 class="hero-title">Put Your Brand<br>In Front of<br><span class="accent">Car Enthusiasts.</span></h1>
+    <p class="hero-sub">Hyper-targeted advertising inside the app where car enthusiasts discover, rank, and obsess over builds. No wasted impressions &mdash; just the audience that cares.</p>
+    <a href="sponsors-apply.html" class="hero-cta">Become a Sponsor</a>
+  </section>
+</div>
+
+<!-- PRICING -->
+<section class="section">
+  <p class="section-label reveal">Sponsorship Tiers</p>
+  <h2 class="section-title reveal">Choose Your<br><span style="color: var(--red);">Tier.</span></h2>
+
+  <div class="pricing-grid reveal">
+    <!-- IGNITION -->
+    <div class="tier-card">
+      <span class="tier-badge standard">Starter</span>
+      <h3 class="tier-name">Ignition</h3>
+      <p class="tier-tagline">Get seen by enthusiasts who care about your niche.</p>
+
+      <div class="price-display">
+        <span class="price-amount">$99</span><span class="price-period">/mo</span>
+      </div>
+
+      <ul class="tier-features">
+        <li>Sponsor profile with product listings</li>
+        <li>1 custom tag</li>
+        <li>Tag appears in feed filters</li>
+        <li>Social links on sponsor profile</li>
+        <li class="coming-soon">Analytics dashboard (coming soon)</li>
+      </ul>
+
+      <a href="sponsors-apply.html" class="tier-cta outline">Get Started</a>
+    </div>
+
+    <!-- APEX -->
+    <div class="tier-card apex">
+      <span class="tier-badge popular">Most Popular</span>
+      <h3 class="tier-name">Apex</h3>
+      <p class="tier-tagline">Targeted placement in feeds and leaderboards.</p>
+
+      <div class="price-display">
+        <span class="price-amount">$499</span><span class="price-period">/mo</span>
+      </div>
+
+      <ul class="tier-features">
+        <li>Everything in Ignition</li>
+        <li>3 custom tags</li>
+        <li>Swipe feed ad placements</li>
+        <li>Tag-based targeting</li>
+        <li>Featured in tag leaderboard</li>
+        <li>Promoted product cards in feed</li>
+        <li class="coming-soon">Analytics dashboard (coming soon)</li>
+      </ul>
+
+      <a href="sponsors-apply.html" class="tier-cta filled">Get Started</a>
+    </div>
+
+    <!-- REDLINE -->
+    <div class="tier-card redline">
+      <span class="tier-badge premium">Premium</span>
+      <h3 class="tier-name">Redline</h3>
+      <p class="tier-tagline">Full brand integration across the platform.</p>
+
+      <div class="price-display">
+        <span class="price-amount">$1,499</span><span class="price-period">/mo</span>
+      </div>
+
+      <ul class="tier-features">
+        <li>Everything in Apex</li>
+        <li>Unlimited custom tags</li>
+        <li>Priority swipe ad placement in niche</li>
+        <li>Brand-run tag competition</li>
+        <li>Co-branded badge on top builds in niche</li>
+        <li>Homepage / Discover feature spot</li>
+        <li>Creator sponsor codes with conversion tracking</li>
+        <li>First right of refusal on new ad formats</li>
+        <li>Dedicated account support</li>
+        <li class="coming-soon">Analytics dashboard (coming soon)</li>
+      </ul>
+
+      <a href="sponsors-apply.html" class="tier-cta gold">Get Started</a>
+    </div>
+  </div>
+
+  <!-- EARLY ADOPTER BANNER -->
+  <div class="early-banner reveal">
+    <div class="early-banner-content">
+      <div class="early-banner-icon">
+        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <div class="early-banner-text">
+        <p class="early-banner-label">Founding Sponsor Pricing</p>
+        <h3>Lock In Your Rate <span style="color: var(--red);">Before It's Gone.</span></h3>
+        <p>Early sponsors keep current pricing until RevRank hits 50,000 users. As the platform scales, rates go up &mdash; but founding sponsors stay locked in. Once these rates are gone, they're gone.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY REVRANK -->
+<section class="section">
+  <p class="section-label reveal">Why RevRank?</p>
+  <h2 class="section-title reveal">Built for<br><span style="color: var(--red);">Precision.</span></h2>
+
+  <div class="value-grid reveal">
+    <div class="value-card">
+      <div class="value-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h3>Hyper-Targeted Niche Audience</h3>
+      <p>Every user on RevRank is a verified car enthusiast. No broad demographics &mdash; your ads reach people who actually care about performance parts, detailing, and builds.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">
+        <svg viewBox="0 0 24 24"><path d="M7 20l-4-4m0 0l4-4m-4 4h16M17 4l4 4m0 0l-4 4m4-4H5"/></svg>
+      </div>
+      <h3>Swipe Feed Ad Placement</h3>
+      <p>Your brand shows up natively in the swipe feed &mdash; the core interaction of the app. High-intent views, not banner blindness.</p>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">
+        <svg viewBox="0 0 24 24"><path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/></svg>
+      </div>
+      <h3>Creator Sponsor Codes</h3>
+      <p>Give top builders unique codes to share with their followers. Track conversions from the creators who move your audience.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <div class="bottom-cta-bg"></div>
+  <h2>Ready to Reach<br><span style="color: var(--red);">Car Enthusiasts?</span></h2>
+  <p>Lock in early sponsor rates before the platform scales.</p>
+  <a href="sponsors-apply.html" class="hero-cta">Become a Sponsor</a>
+</div>
+
+<footer>
+  <a href="index.html" class="logo" style="font-size: 1.1rem; text-decoration: none;">Rev<span style="color: var(--red);">Rank</span></a>
+  <span>&copy; 2026 RevRank. Coming soon.</span>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
