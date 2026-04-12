@@ -67,22 +67,27 @@
 
   .logo span { color: var(--red); }
 
-  .nav-cta {
-    background: var(--red);
-    color: white;
-    border: none;
-    padding: 0.5rem 1.25rem;
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background 0.2s;
+  .nav-socials {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
   }
 
-  .nav-cta:hover { background: var(--red-dark); }
+  .nav-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+
+  .nav-socials a:hover { color: var(--text); }
+
+  .nav-socials svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
 
   /* HERO */
   .hero {
@@ -90,6 +95,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    text-align: center;
     padding: 8rem 2rem 4rem;
     position: relative;
     overflow: hidden;
@@ -136,6 +143,7 @@
     display: flex;
     gap: 0;
     max-width: 480px;
+    width: 100%;
     opacity: 0;
     animation: fadeUp 0.6s ease 0.5s forwards;
   }
@@ -560,6 +568,39 @@
     margin: 0 auto;
   }
 
+  /* MARQUEE */
+  .marquee-section {
+    padding: 3rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marqueeScroll 30s linear infinite;
+  }
+
+  .marquee-track img {
+    height: 500px;
+    width: auto;
+    margin: 0 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    flex-shrink: 0;
+  }
+
+  @keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 600px) {
+    .marquee-track img { height: 320px; margin: 0 0.75rem; }
+  }
+
   /* ANIMATIONS */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(20px); }
@@ -588,7 +629,11 @@
 
 <nav>
   <div class="logo">Rev<span>Rank</span></div>
-  <a href="#waitlist" class="nav-cta">Join Waitlist</a>
+  <div class="nav-socials">
+    <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5zm4.25 3.25a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5zm5.5-.75a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg></a>
+    <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.6 5.82A4.278 4.278 0 0 1 13.4 2h-3.08v13.56a2.72 2.72 0 0 1-2.72 2.56 2.72 2.72 0 0 1-2.72-2.72A2.72 2.72 0 0 1 7.6 12.68c.29 0 .56.04.82.12V9.68A5.82 5.82 0 0 0 1.8 15.4a5.82 5.82 0 0 0 5.8 5.8 5.82 5.82 0 0 0 5.8-5.8V9.14A7.34 7.34 0 0 0 17.68 11V7.88a4.3 4.3 0 0 1-1.08-2.06z"/></svg></a>
+    <a href="#" aria-label="X / Twitter"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -607,169 +652,6 @@
   </section>
 </div>
 
-<!-- COUNTER STRIP -->
-<div class="counter-strip">
-  <strong id="counter">—</strong>
-  <p>Enthusiasts already on the waitlist</p>
-</div>
-
-<!-- HOW IT WORKS -->
-<section class="section">
-  <p class="section-label reveal">How it works</p>
-  <h2 class="section-title reveal">Swipe. Rank.<br>Rise.</h2>
-
-  <div class="swipe-grid reveal">
-    <div class="swipe-card up">
-      <span class="swipe-dir">↑</span>
-      <span class="swipe-pts">+5</span>
-      <span class="swipe-label">Fire build</span>
-    </div>
-    <div class="swipe-card right">
-      <span class="swipe-dir">→</span>
-      <span class="swipe-pts">+1</span>
-      <span class="swipe-label">Solid</span>
-    </div>
-    <div class="swipe-card left">
-      <span class="swipe-dir">←</span>
-      <span class="swipe-pts">0</span>
-      <span class="swipe-label">Pass</span>
-    </div>
-    <div class="swipe-card down">
-      <span class="swipe-dir">↓</span>
-      <span class="swipe-pts">−5</span>
-      <span class="swipe-label">Not it</span>
-    </div>
-  </div>
-
-  <!-- FEATURES -->
-  <div class="features-grid reveal">
-    <div class="feature">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24"><path d="M7 20l-4-4m0 0l4-4m-4 4h16M17 4l4 4m0 0l-4 4m4-4H5"/></svg>
-      </div>
-      <h3>Swipe to Rank</h3>
-      <p>Rate builds in seconds with a swipe. Up, down, left, right — each direction assigns points and shapes the global rankings.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24"><path d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/></svg>
-      </div>
-      <h3>Tag System</h3>
-      <p>Tag your build — drift, track, stance, German, JDM, American muscle. Tags power category-specific leaderboards.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-      </div>
-      <h3>Leaderboards</h3>
-      <p>Global rankings plus tag-specific boards. Best German build? Top drift car? Best track setup? There's a board for it.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
-      </div>
-      <h3>Collections</h3>
-      <p>Save builds to personal collections for inspiration. Planning a new build? Pull up saved references any time.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-      </div>
-      <h3>Build Profiles</h3>
-      <p>Post your full build — photos, mods list, specs. Tell the story of your car and grow a following of people who get it.</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-      </div>
-      <h3>Discovery Feed</h3>
-      <p>Swipe through a curated feed of builds filtered to what you care about. No algorithm noise — just cars.</p>
-    </div>
-  </div>
-
-  <!-- LEADERBOARD PREVIEW -->
-  <div class="lb-preview reveal">
-    <div class="lb-header">
-      <div class="lb-tabs">
-        <span class="tab-active">Global</span>
-        <span>German</span>
-        <span>Track</span>
-        <span>Drift</span>
-      </div>
-      <span>Top Builds</span>
-    </div>
-
-    <div class="lb-row">
-      <div class="lb-rank gold">#1</div>
-      <div class="lb-car-img">
-        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><path d="M5 20 Q8 12 20 10 L40 10 Q52 10 55 20 L5 20Z" fill="currentColor"/><circle cx="15" cy="22" r="4" fill="currentColor"/><circle cx="45" cy="22" r="4" fill="currentColor"/></svg>
-      </div>
-      <div class="lb-info">
-        <div class="lb-name">@lowlife_kai — 2019 M3 Competition</div>
-        <div class="lb-tags">
-          <span class="tag german">German</span>
-          <span class="tag">Track</span>
-          <span class="tag">Modified</span>
-        </div>
-      </div>
-      <div class="lb-pts">4,820 <small>pts</small></div>
-    </div>
-
-    <div class="lb-row">
-      <div class="lb-rank silver">#2</div>
-      <div class="lb-car-img">
-        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><path d="M5 20 Q8 12 20 10 L40 10 Q52 10 55 20 L5 20Z" fill="currentColor"/><circle cx="15" cy="22" r="4" fill="currentColor"/><circle cx="45" cy="22" r="4" fill="currentColor"/></svg>
-      </div>
-      <div class="lb-info">
-        <div class="lb-name">@yokohama_rex — 2022 WRX STI</div>
-        <div class="lb-tags">
-          <span class="tag">JDM</span>
-          <span class="tag">Drift</span>
-        </div>
-      </div>
-      <div class="lb-pts">3,940 <small>pts</small></div>
-    </div>
-
-    <div class="lb-row">
-      <div class="lb-rank bronze">#3</div>
-      <div class="lb-car-img">
-        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><path d="M5 20 Q8 12 20 10 L40 10 Q52 10 55 20 L5 20Z" fill="currentColor"/><circle cx="15" cy="22" r="4" fill="currentColor"/><circle cx="45" cy="22" r="4" fill="currentColor"/></svg>
-      </div>
-      <div class="lb-info">
-        <div class="lb-name">@stance_nation_1 — 2018 Golf R</div>
-        <div class="lb-tags">
-          <span class="tag german">German</span>
-          <span class="tag">Stance</span>
-        </div>
-      </div>
-      <div class="lb-pts">3,210 <small>pts</small></div>
-    </div>
-
-    <div class="lb-row" style="opacity: 0.35; pointer-events: none;">
-      <div class="lb-rank">#4</div>
-      <div class="lb-car-img">
-        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><path d="M5 20 Q8 12 20 10 L40 10 Q52 10 55 20 L5 20Z" fill="currentColor"/><circle cx="15" cy="22" r="4" fill="currentColor"/><circle cx="45" cy="22" r="4" fill="currentColor"/></svg>
-      </div>
-      <div class="lb-info">
-        <div class="lb-name">Join to see more...</div>
-        <div class="lb-tags"><span class="tag">Your build could be here</span></div>
-      </div>
-      <div class="lb-pts">— <small>pts</small></div>
-    </div>
-  </div>
-</section>
-
-<!-- BOTTOM CTA -->
-<div class="bottom-cta">
-  <div class="bottom-cta-bg"></div>
-  <h2>Your Build<br>Deserves <span style="color: var(--red);">Recognition.</span></h2>
-  <p>Be first in when RevRank launches.</p>
-  <form class="bottom-waitlist" onsubmit="handleSubmit(event, 'bottom-success')">
-    <input type="email" id="bottom-email" placeholder="your@email.com" required>
-    <button type="submit">Join Waitlist</button>
-  </form>
-  <div class="success-msg" id="bottom-success" style="margin: 0.75rem auto 0; text-align: left;">You're locked in. We'll reach out before launch.</div>
-</div>
 
 <footer>
   <span class="logo" style="font-size: 1.1rem;">Rev<span style="color: var(--red);">Rank</span></span>
