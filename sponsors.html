@@ -209,6 +209,104 @@
     text-align: center;
   }
 
+  /* LIMITED OFFER */
+  .limited-offer {
+    position: relative;
+    margin-bottom: 2.5rem;
+    padding: 2.5rem 2.5rem;
+    background: var(--surface);
+    border: 2px solid var(--red);
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .limited-offer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(232,39,26,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .limited-offer-content {
+    position: relative;
+  }
+
+  .limited-offer-badge {
+    display: inline-block;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    font-weight: 500;
+    background: var(--red);
+    color: white;
+    margin-bottom: 1.25rem;
+  }
+
+  .limited-offer-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 0.75rem;
+  }
+
+  .limited-offer-price {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .limited-offer-price-note {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .limited-offer-price-note s {
+    color: var(--muted);
+    opacity: 0.6;
+  }
+
+  .limited-offer-desc {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto 1.75rem;
+  }
+
+  .limited-offer-urgency {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+
+  .limited-offer-cta {
+    display: inline-block;
+    background: var(--red);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .limited-offer-cta:hover { background: var(--red-dark); }
+
   /* PRICING GRID */
   .pricing-grid {
     display: grid;
@@ -569,6 +667,19 @@
   <a href="sponsors-apply.html" class="nav-cta">Become a Sponsor</a>
 </nav>
 
+<!-- LIMITED-TIME OFFER -->
+<div class="limited-offer" style="margin-top: 6rem; padding-top: 6rem; max-width: 1200px; margin-left: auto; margin-right: auto;">
+  <div class="limited-offer-content">
+    <span class="limited-offer-badge">Limited-Time Early Adopter Offer</span>
+    <div class="limited-offer-title">Get Redline for<br><span style="color: var(--red);">$5/Year.</span></div>
+    <div class="limited-offer-price">$5</div>
+    <p class="limited-offer-price-note">per year &mdash; normally $499/mo</p>
+    <p class="limited-offer-desc">Lock in our top-tier Redline sponsorship for just $5 for an entire year. This offer won't be here forever. Once the early adopter spots fill up, this offer is gone forever.</p>
+    <p class="limited-offer-urgency">Limited spots available &mdash; first come, first served</p>
+    <a href="STRIPE_PLACEHOLDER" class="limited-offer-cta">Claim Your Spot</a>
+  </div>
+</div>
+
 <!-- HERO -->
 <div style="position: relative; overflow: hidden;">
   <div class="hero-bg-text">ADS</div>
@@ -614,7 +725,7 @@
       <p class="tier-tagline">Targeted placement in feeds and leaderboards.</p>
 
       <div class="price-display">
-        <span class="price-amount">$499</span><span class="price-period">/mo</span>
+        <span class="price-amount">$250</span><span class="price-period">/mo</span>
       </div>
 
       <ul class="tier-features">
@@ -637,7 +748,7 @@
       <p class="tier-tagline">Full brand integration across the platform.</p>
 
       <div class="price-display">
-        <span class="price-amount">$1,499</span><span class="price-period">/mo</span>
+        <span class="price-amount">$499</span><span class="price-period">/mo</span>
       </div>
 
       <ul class="tier-features">
