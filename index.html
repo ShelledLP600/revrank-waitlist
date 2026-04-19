@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RevRank — Where Builds Get Ranked</title>
+<title>RevRank — The #1 Mod Discovery Platform</title>
+<meta name="description" content="Browse mods from different brands, see them on real builds, and buy. All in one place.">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -63,31 +65,22 @@
     font-size: 1.6rem;
     letter-spacing: 0.08em;
     color: var(--text);
+    text-decoration: none;
   }
 
   .logo span { color: var(--red); }
 
-  .nav-socials {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-  }
+  .nav-socials { display: flex; align-items: center; gap: 1.25rem; }
 
   .nav-socials a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     color: var(--muted);
     transition: color 0.2s;
   }
 
   .nav-socials a:hover { color: var(--text); }
 
-  .nav-socials svg {
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
-  }
+  .nav-socials svg { width: 20px; height: 20px; fill: currentColor; }
 
   /* HERO */
   .hero {
@@ -104,6 +97,20 @@
     margin: 0 auto;
   }
 
+  .hero-bg-text {
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-display);
+    font-size: clamp(12rem, 30vw, 22rem);
+    color: rgba(255,255,255,0.025);
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+  }
+
   .hero-eyebrow {
     font-size: 0.75rem;
     letter-spacing: 0.2em;
@@ -117,13 +124,14 @@
 
   .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(4rem, 12vw, 9rem);
-    line-height: 0.92;
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    line-height: 0.95;
     letter-spacing: 0.02em;
     text-transform: uppercase;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     opacity: 0;
     animation: fadeUp 0.6s ease 0.2s forwards;
+    max-width: 900px;
   }
 
   .hero-title .accent { color: var(--red); }
@@ -131,8 +139,8 @@
   .hero-sub {
     font-size: clamp(1rem, 2vw, 1.2rem);
     color: var(--muted);
-    max-width: 640px;
-    margin-bottom: 3rem;
+    max-width: 620px;
+    margin-bottom: 2.5rem;
     line-height: 1.7;
     opacity: 0;
     animation: fadeUp 0.6s ease 0.35s forwards;
@@ -179,7 +187,8 @@
     transition: background 0.2s;
   }
 
-  .waitlist-form button:hover { background: var(--red-dark); border-color: var(--red-dark); }
+  .waitlist-form button:hover:not(:disabled) { background: var(--red-dark); border-color: var(--red-dark); }
+  .waitlist-form button:disabled { opacity: 0.7; cursor: wait; }
 
   .form-note {
     margin-top: 0.75rem;
@@ -197,52 +206,38 @@
     color: #4fcc82;
     font-size: 0.9rem;
     max-width: 480px;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
   }
 
-  /* COUNTER */
-  .counter-strip {
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 1.5rem 2rem;
-    background: var(--surface);
-    text-align: center;
-    opacity: 0;
-    animation: fadeUp 0.6s ease 0.7s forwards;
-  }
-
-  .counter-strip p {
-    font-size: 0.8rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .counter-strip strong {
+  .error-msg {
+    display: none;
+    padding: 0.75rem 1.25rem;
+    background: rgba(232, 39, 26, 0.08);
+    border: 1px solid rgba(232, 39, 26, 0.3);
     color: var(--red);
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+    max-width: 480px;
+    margin-top: 0.75rem;
+  }
+
+  /* HERO SCREENSHOT */
+  .hero-screenshot {
+    margin-top: 4rem;
+    max-width: 300px;
+    width: 100%;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.7s forwards;
+  }
+
+  .hero-screenshot img {
+    width: 100%;
+    height: auto;
     display: block;
-    margin-bottom: 0.25rem;
+    border-radius: 24px;
+    filter: drop-shadow(0 30px 60px rgba(232, 39, 26, 0.15));
   }
 
-  /* BG DECORATION */
-  .hero-bg-text {
-    position: absolute;
-    right: -2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--font-display);
-    font-size: clamp(12rem, 30vw, 22rem);
-    color: rgba(255,255,255,0.025);
-    letter-spacing: 0.05em;
-    pointer-events: none;
-    user-select: none;
-    line-height: 1;
-  }
-
-  /* HOW IT WORKS */
+  /* SECTIONS */
   .section {
     padding: 6rem 2rem;
     max-width: 1200px;
@@ -256,72 +251,99 @@
     color: var(--red);
     font-weight: 500;
     margin-bottom: 0.75rem;
+    text-align: center;
   }
 
   .section-title {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2.3rem, 5vw, 3.8rem);
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    margin-bottom: 3.5rem;
-    line-height: 1;
-  }
-
-  /* SWIPE DEMO */
-  .swipe-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin-bottom: 5rem;
-  }
-
-  .swipe-card {
-    background: var(--surface);
-    padding: 2rem 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.05;
     text-align: center;
-    transition: background 0.2s;
   }
 
-  .swipe-card:hover { background: var(--surface2); }
+  .section-title .accent { color: var(--red); }
 
-  .swipe-dir {
-    font-family: var(--font-display);
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-
-  .swipe-card.up .swipe-dir { color: #4fcc82; }
-  .swipe-card.right .swipe-dir { color: #4aa8ff; }
-  .swipe-card.down .swipe-dir { color: var(--red); }
-  .swipe-card.left .swipe-dir { color: var(--muted); }
-
-  .swipe-pts {
-    font-family: var(--font-display);
-    font-size: 2.5rem;
-    letter-spacing: 0.05em;
-    display: block;
-    margin-bottom: 0.25rem;
-  }
-
-  .swipe-card.up .swipe-pts { color: #4fcc82; }
-  .swipe-card.right .swipe-pts { color: #4aa8ff; }
-  .swipe-card.down .swipe-pts { color: var(--red); }
-  .swipe-card.left .swipe-pts { color: var(--muted); }
-
-  .swipe-label {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  .section-sub {
+    font-size: 1rem;
     color: var(--muted);
+    max-width: 600px;
+    margin: 0 auto 4rem;
+    text-align: center;
+    line-height: 1.7;
   }
 
-  /* FEATURES */
+  /* HOW IT WORKS */
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-bottom: 4rem;
+  }
+
+  .steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .step {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    color: var(--red);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 3rem;
+    border-right: 1px solid var(--border);
+    padding-right: 1rem;
+  }
+
+  .step-body h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .step-body p {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .steps-images {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .steps-images img {
+    max-width: 240px;
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .steps-images img:nth-child(2) {
+    transform: translateY(2rem);
+  }
+
+  /* VALUE PROPS */
   .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
@@ -336,8 +358,8 @@
   .feature:hover { background: var(--surface2); }
 
   .feature-icon {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     background: var(--red-glow);
     border: 1px solid rgba(232,39,26,0.3);
     display: flex;
@@ -347,8 +369,8 @@
   }
 
   .feature-icon svg {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     stroke: var(--red);
     fill: none;
     stroke-width: 1.5;
@@ -370,123 +392,116 @@
     line-height: 1.6;
   }
 
-  /* LEADERBOARD PREVIEW */
-  .lb-preview {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    overflow: hidden;
-    margin-top: 5rem;
-  }
-
-  .lb-header {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
+  /* COMMUNITY SECTION */
+  .community {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
     align-items: center;
+    padding: 6rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
-  .lb-header span {
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .lb-header .tab-active {
-    color: var(--red);
-    border-bottom: 1px solid var(--red);
-    padding-bottom: 2px;
-  }
-
-  .lb-tabs { display: flex; gap: 1.5rem; }
-
-  .lb-row {
-    display: flex;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    gap: 1rem;
-    transition: background 0.15s;
-  }
-
-  .lb-row:last-child { border-bottom: none; }
-  .lb-row:hover { background: var(--surface2); }
-
-  .lb-rank {
+  .community-text h2 {
     font-family: var(--font-display);
-    font-size: 1.1rem;
+    font-size: clamp(2rem, 4.5vw, 3.3rem);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+
+  .community-text h2 .accent { color: var(--red); }
+
+  .community-text p {
     color: var(--muted);
-    min-width: 28px;
+    line-height: 1.7;
+    font-size: 1rem;
   }
 
-  .lb-rank.gold { color: #f5c842; }
-  .lb-rank.silver { color: #b0b8c4; }
-  .lb-rank.bronze { color: #cd7f32; }
-
-  .lb-car-img {
-    width: 60px;
-    height: 40px;
-    background: var(--surface2);
+  .community-img { display: flex; justify-content: center; }
+  .community-img img {
+    max-width: 320px;
+    width: 100%;
+    border-radius: 24px;
     border: 1px solid var(--border);
-    display: flex;
+  }
+
+  /* BUSINESSES SECTION */
+  .businesses {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 6rem 2rem;
+  }
+
+  .businesses-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
     align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
   }
 
-  .lb-car-img svg {
-    width: 36px;
-    height: 20px;
-    fill: var(--muted);
-    opacity: 0.5;
+  .businesses-text .section-label { text-align: left; }
+
+  .businesses-text h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.3rem);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
   }
 
-  .lb-info { flex: 1; }
+  .businesses-text h2 .accent { color: var(--red); }
 
-  .lb-name {
+  .businesses-text p {
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    max-width: 520px;
+  }
+
+  .businesses-cta {
+    display: inline-block;
+    background: var(--red);
+    color: white;
+    padding: 0.9rem 2rem;
+    font-family: var(--font-body);
     font-size: 0.9rem;
     font-weight: 500;
-    color: var(--text);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
   }
 
-  .lb-tags { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
+  .businesses-cta:hover { background: var(--red-dark); }
 
-  .tag {
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
+  .businesses-images {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .businesses-images img {
+    max-width: 220px;
+    width: 100%;
+    border-radius: 20px;
     border: 1px solid var(--border);
-    padding: 2px 8px;
   }
 
-  .tag.german { border-color: rgba(232,39,26,0.4); color: var(--red); }
-
-  .lb-pts {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    letter-spacing: 0.05em;
-    color: var(--text);
-    text-align: right;
-  }
-
-  .lb-pts small {
-    display: block;
-    font-family: var(--font-body);
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 400;
-  }
+  .businesses-images img:nth-child(2) { transform: translateY(2rem); }
 
   /* BOTTOM CTA */
   .bottom-cta {
     padding: 8rem 2rem;
     text-align: center;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
     position: relative;
     overflow: hidden;
   }
@@ -494,18 +509,21 @@
   .bottom-cta-bg {
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at center, rgba(232,39,26,0.06) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, rgba(232,39,26,0.08) 0%, transparent 70%);
     pointer-events: none;
   }
 
   .bottom-cta h2 {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     margin-bottom: 1rem;
     position: relative;
+    line-height: 1;
   }
+
+  .bottom-cta h2 .accent { color: var(--red); }
 
   .bottom-cta p {
     color: var(--muted);
@@ -514,46 +532,13 @@
     position: relative;
   }
 
-  .bottom-waitlist {
-    display: flex;
-    gap: 0;
-    max-width: 420px;
+  .bottom-cta .waitlist-form {
     margin: 0 auto;
     position: relative;
   }
 
-  .bottom-waitlist input {
-    flex: 1;
-    background: var(--black);
-    border: 1px solid var(--border);
-    border-right: none;
-    color: var(--text);
-    padding: 0.9rem 1.25rem;
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .bottom-waitlist input::placeholder { color: var(--muted); }
-  .bottom-waitlist input:focus { border-color: var(--red); }
-
-  .bottom-waitlist button {
-    background: var(--red);
-    color: white;
-    border: 1px solid var(--red);
-    padding: 0.9rem 1.5rem;
-    font-family: var(--font-body);
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.2s;
-  }
-
-  .bottom-waitlist button:hover { background: var(--red-dark); }
+  .bottom-cta .success-msg,
+  .bottom-cta .error-msg { margin-left: auto; margin-right: auto; }
 
   /* FOOTER */
   footer {
@@ -566,40 +551,12 @@
     color: var(--muted);
     max-width: 1200px;
     margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 
-  /* MARQUEE */
-  .marquee-section {
-    padding: 3rem 0;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    overflow: hidden;
-  }
-
-  .marquee-track {
-    display: flex;
-    width: max-content;
-    animation: marqueeScroll 30s linear infinite;
-  }
-
-  .marquee-track img {
-    height: 500px;
-    width: auto;
-    margin: 0 1.5rem;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    flex-shrink: 0;
-  }
-
-  @keyframes marqueeScroll {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  @media (max-width: 600px) {
-    .marquee-track img { height: 320px; margin: 0 0.75rem; }
-  }
+  footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  footer a:hover { color: var(--text); }
 
   /* ANIMATIONS */
   @keyframes fadeUp {
@@ -618,17 +575,29 @@
     transform: none;
   }
 
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .steps, .community, .businesses-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .steps-images img:nth-child(2),
+    .businesses-images img:nth-child(2) { transform: none; }
+    .steps-images, .businesses-images { flex-wrap: wrap; }
+  }
+
   @media (max-width: 600px) {
-    .waitlist-form, .bottom-waitlist { flex-direction: column; }
-    .waitlist-form input, .bottom-waitlist input { border-right: 1px solid var(--border); border-bottom: none; }
-    .lb-tabs { gap: 1rem; }
+    .waitlist-form { flex-direction: column; }
+    .waitlist-form input { border-right: 1px solid var(--border); border-bottom: none; }
+    .section { padding: 4rem 1.5rem; }
+    .community, .businesses { padding: 4rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .bottom-cta { padding: 6rem 1.5rem; }
+    .steps-images img, .businesses-images img { max-width: 180px; }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">Rev<span>Rank</span></div>
+  <a href="index.html" class="logo">Rev<span>Rank</span></a>
   <div class="nav-socials">
     <a href="https://instagram.com/revranked" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5zm4.25 3.25a5.25 5.25 0 1 1 0 10.5 5.25 5.25 0 0 1 0-10.5zm0 1.5a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5zm5.5-.75a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg></a>
     <a href="https://tiktok.com/@revedranked" target="_blank" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.6 5.82A4.278 4.278 0 0 1 13.4 2h-3.08v13.56a2.72 2.72 0 0 1-2.72 2.56 2.72 2.72 0 0 1-2.72-2.72A2.72 2.72 0 0 1 7.6 12.68c.29 0 .56.04.82.12V9.68A5.82 5.82 0 0 0 1.8 15.4a5.82 5.82 0 0 0 5.8 5.8 5.82 5.82 0 0 0 5.8-5.8V9.14A7.34 7.34 0 0 0 17.68 11V7.88a4.3 4.3 0 0 1-1.08-2.06z"/></svg></a>
@@ -640,24 +609,149 @@
   <div class="hero-bg-text">REV</div>
   <section class="hero" id="waitlist">
     <p class="hero-eyebrow">Coming soon &mdash; Join the waitlist</p>
-    <h1 class="hero-title" style="font-size: clamp(2.5rem, 7vw, 5rem);">Where Builds Get <span class="accent">Ranked.</span></h1>
-    <p class="hero-sub">The social app for car enthusiasts. Post your build, swipe through others, and see where you stack up on the global leaderboard.</p>
-    <form class="waitlist-form" onsubmit="handleSubmit(event, 'hero-success')">
+    <h1 class="hero-title">The <span class="accent">#1</span> Mod Discovery Platform.</h1>
+    <p class="hero-sub">Browse mods from different brands, see them on real builds, and buy. All in one place.</p>
+
+    <form class="waitlist-form" onsubmit="handleWaitlist(event, 'hero-email', 'hero-success', 'hero-error')">
       <input type="email" id="hero-email" placeholder="your@email.com" required>
-      <button type="submit">Get Early Access</button>
+      <button type="submit">Join the Waitlist</button>
     </form>
-    <p class="form-note">Free forever. No spam. First to know when we launch.</p>
-    <div class="success-msg" id="hero-success">You're on the list. We'll hit you when RevRank drops.</div>
+    <p class="form-note">No spam. First to know when we drop.</p>
+    <div class="success-msg" id="hero-success">You're on the list. We'll hit you up when RevRank launches.</div>
+    <div class="error-msg" id="hero-error"></div>
+
+    <div class="hero-screenshot">
+      <img src="SwipeExample.jpg" alt="RevRank swipe feed" loading="lazy">
+    </div>
   </section>
 </div>
 
+<!-- HOW IT WORKS -->
+<section class="section">
+  <p class="section-label reveal">How it works</p>
+  <h2 class="section-title reveal">Find the Mods.<br><span class="accent">See Them on Cars Like Yours.</span></h2>
+
+  <div class="steps reveal">
+    <div class="steps-list">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h3>Link your car</h3>
+          <p>Your build lives in the app: year, make, model, and every mod you're running.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h3>Discover mods built for your build</h3>
+          <p>Swipe through products for your exact car. Filter how you'd like.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h3>See them on real cars. Buy with confidence.</h3>
+          <p>Every product is tagged to real builds in the community, so you know how it looks before you buy.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps-images">
+      <img src="DisplayedMods.jpg" alt="Swipe through products" loading="lazy">
+      <img src="ProductSaving.jpg" alt="Product detail with tagged builds" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- VALUE PROPS -->
+<section class="section">
+  <p class="section-label reveal">Why RevRank</p>
+  <h2 class="section-title reveal">Built for <span class="accent">Enthusiasts.</span></h2>
+
+  <div class="features-grid reveal">
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+      </div>
+      <h3>No more Googling</h3>
+      <p>Everything in one place. Stop jumping between forums, single brands, YouTube, and ten browser tabs.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <h3>See it on your car</h3>
+      <p>Products are tagged to builds like yours so you know exactly how it looks before you buy.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <h3>Community reviews</h3>
+      <p>Ratings and comments from enthusiasts actually running the parts: not paid reviewers.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
+      </div>
+      <h3>Ease of Use</h3>
+      <p>Google it. Instagram it. Reddit it. Or just RevRank It.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section class="community">
+  <div class="community-text reveal">
+    <p class="section-label" style="text-align:left;">Community</p>
+    <h2>Get Live <span class="accent"> feedback</span></h2>
+    <p>Builders share their cars, tag their mods, and help each other find the right parts. No one wants to read fake reveiws on vendor sites.</p>
+  </div>
+  <div class="community-img reveal">
+    <img src="CommentSection.jpg" alt="Build profile with tagged mods and comments" loading="lazy">
+  </div>
+</section>
+
+<!-- FOR BUSINESSES -->
+<section class="businesses">
+  <div class="businesses-inner">
+    <div class="businesses-text reveal">
+      <p class="section-label">For Businesses</p>
+      <h2>Reach thousands of enthusiasts <span class="accent">already looking for what you sell.</span></h2>
+      <p>List your products on RevRank and get in front of verified car enthusiasts actively searching for mods that fit their build.</p>
+      <a href="sponsors.html" class="businesses-cta">Become a Partner</a>
+    </div>
+    <div class="businesses-images reveal">
+      <img src="FeaturedProduct.jpg" alt="Product detail page" loading="lazy">
+      <img src="BusinessProfile.jpg" alt="Business profile" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA / WAITLIST -->
+<section class="bottom-cta">
+  <div class="bottom-cta-bg"></div>
+  <h2>Secure Your Spot &mdash;<br><span class="accent">Launching Soon.</span></h2>
+  <p>Be first in line when RevRank drops.</p>
+  <form class="waitlist-form" onsubmit="handleWaitlist(event, 'bottom-email', 'bottom-success', 'bottom-error')">
+    <input type="email" id="bottom-email" placeholder="your@email.com" required>
+    <button type="submit">Join the Waitlist</button>
+  </form>
+  <div class="success-msg" id="bottom-success">You're on the list. We'll hit you up when RevRank launches.</div>
+  <div class="error-msg" id="bottom-error"></div>
+</section>
 
 <footer>
-  <span class="logo" style="font-size: 1.1rem;">Rev<span style="color: var(--red);">Rank</span></span>
-  <span>&copy; 2026 RevRank. Coming soon. &middot; <a href="privacy.html" style="color:#888;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='#F0EDE8'" onmouseout="this.style.color='#888'">Privacy Policy</a></span>
+  <a href="index.html" class="logo" style="font-size: 1.1rem;">Rev<span>Rank</span></a>
+  <span>&copy; 2026 RevRank. Coming soon. &middot; <a href="privacy.html">Privacy Policy</a></span>
 </footer>
 
 <script>
+  // Supabase client
+  const SUPABASE_URL = 'https://gwsgonbkymbemwnvdzdn.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd3c2dvbmJreW1iZW13bnZkemRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NDIwNTgsImV4cCI6MjA5MDExODA1OH0.fHfm5H2inKk39ae5FTFxthkZA9-57pJ3fGgSC-OcMrY';
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
@@ -665,40 +759,36 @@
   }, { threshold: 0.1 });
   reveals.forEach(r => observer.observe(r));
 
-  // Animated counter (placeholder — wire to Supabase later)
-  let count = 0;
-  const target = 247;
-  const el = document.getElementById('counter');
-  const step = () => {
-    count += Math.ceil((target - count) / 8);
-    if (count >= target) { el.textContent = target.toLocaleString(); return; }
-    el.textContent = count.toLocaleString();
-    setTimeout(step, 40);
-  };
-  setTimeout(step, 800);
-
-  // Form handler — swap this fetch for your Supabase endpoint
-  function handleSubmit(e, successId) {
+  // Waitlist submit handler — both forms write to the same `waitlist` table
+  async function handleWaitlist(e, inputId, successId, errorId) {
     e.preventDefault();
-    const btn = e.target.querySelector('button');
-    const input = e.target.querySelector('input');
-    const success = document.getElementById(successId);
-    const email = input.value;
+    const form = e.target;
+    const btn = form.querySelector('button');
+    const input = document.getElementById(inputId);
+    const successMsg = document.getElementById(successId);
+    const errorMsg = document.getElementById(errorId);
+    const email = input.value.trim();
 
-    btn.textContent = 'Sending...';
+    btn.textContent = 'Joining...';
     btn.disabled = true;
+    errorMsg.style.display = 'none';
 
-    // TODO: replace with fetch to your Supabase function endpoint
-    // fetch('https://YOUR_PROJECT.supabase.co/functions/v1/waitlist', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ email })
-    // })
+    try {
+      const { error } = await supabaseClient
+        .from('waitlist')
+        .insert([{ email }]);
 
-    setTimeout(() => {
-      e.target.style.display = 'none';
-      success.style.display = 'block';
-    }, 800);
+      // Treat duplicate-email unique-violation as success (already on the list)
+      if (error && error.code !== '23505') throw error;
+
+      form.style.display = 'none';
+      successMsg.style.display = 'block';
+    } catch (err) {
+      errorMsg.textContent = 'Something went wrong. Try again in a moment.';
+      errorMsg.style.display = 'block';
+      btn.textContent = 'Join the Waitlist';
+      btn.disabled = false;
+    }
   }
 </script>
 </body>
