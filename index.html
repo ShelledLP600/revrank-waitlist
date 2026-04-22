@@ -564,6 +564,205 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* ===== MOTORSPORT + PLAYFUL ANIMATIONS ===== */
+
+  /* Redline scroll meter */
+  .redline {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    width: var(--scroll, 0%);
+    background: linear-gradient(90deg, var(--red-dark), var(--red), #ff7a6e);
+    z-index: 101;
+    box-shadow: 0 0 12px var(--red);
+    transition: width 0.08s linear;
+  }
+
+  /* Speed lines ambient */
+  .speedlines {
+    position: absolute; inset: 0;
+    overflow: hidden; pointer-events: none; z-index: 0;
+  }
+  .speedlines span {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(232,39,26,0.55), transparent);
+    animation: speedline linear infinite;
+    opacity: 0;
+  }
+  @keyframes speedline {
+    0%   { transform: translateX(-30vw) scaleX(0.3); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateX(130vw) scaleX(1); opacity: 0; }
+  }
+
+  /* Hero title — per-word overshoot drop-in */
+  .hero-title { animation: none !important; opacity: 1 !important; }
+  .hero-title .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px) rotate(-4deg) scale(0.96);
+    animation: wordDrop 0.75s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  @keyframes wordDrop {
+    0%   { opacity: 0; transform: translateY(40px) rotate(-4deg) scale(0.96); }
+    60%  { opacity: 1; transform: translateY(-6px) rotate(1deg) scale(1.02); }
+    100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+  }
+  .hero-title .word.accent-word {
+    color: var(--red);
+    animation: wordPopRed 0.8s cubic-bezier(.34,1.9,.64,1) forwards;
+  }
+  @keyframes wordPopRed {
+    0%   { opacity: 0; transform: translateY(40px) rotate(-12deg) scale(0.4); }
+    55%  { opacity: 1; transform: translateY(-10px) rotate(6deg) scale(1.25); }
+    75%  { transform: translateY(-4px) rotate(-3deg) scale(1.05); }
+    100% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
+  }
+
+  /* Eyebrow flicker-in */
+  .hero-eyebrow { animation: eyebrowFlicker 0.9s ease forwards !important; }
+  @keyframes eyebrowFlicker {
+    0%, 100% { opacity: 1; }
+    10% { opacity: 0; }
+    20% { opacity: 1; }
+    30% { opacity: 0.3; }
+    40% { opacity: 1; }
+    55% { opacity: 0.5; }
+    70% { opacity: 1; }
+  }
+
+  /* Watermark drift */
+  .hero-bg-text {
+    transition: transform 0.4s ease-out;
+    animation: drift 14s ease-in-out infinite;
+  }
+  .hero-bg-text.left { animation: driftLeft 16s ease-in-out infinite; }
+  @keyframes drift {
+    0%,100% { transform: translateY(-50%) translateX(0); }
+    50%     { transform: translateY(-50%) translateX(-18px); }
+  }
+  @keyframes driftLeft {
+    0%,100% { transform: translateY(-50%) translateX(0); }
+    50%     { transform: translateY(-50%) translateX(18px); }
+  }
+
+  /* CTAs — shimmer + idle tremor + ticking ring */
+  .waitlist-form button,
+  .businesses-cta {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    animation: ctaIdle 0.9s ease-in-out infinite;
+    transition: letter-spacing 0.25s, background 0.2s;
+  }
+  .waitlist-form button::before,
+  .businesses-cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(100deg, transparent 0%, transparent 35%, rgba(255,255,255,0.35) 50%, transparent 65%, transparent 100%);
+    transform: translateX(-120%);
+    animation: ctaShimmer 2.2s ease-in-out infinite;
+    pointer-events: none; z-index: 1;
+  }
+  .waitlist-form button::after,
+  .businesses-cta::after {
+    content: '';
+    position: absolute; inset: -2px;
+    border: 1px solid rgba(255,255,255,0.35);
+    opacity: 0; pointer-events: none;
+    animation: ctaTick 2.2s ease-in-out infinite;
+    z-index: 0;
+  }
+  .waitlist-form button > *,
+  .businesses-cta > * { position: relative; z-index: 2; }
+  @keyframes ctaShimmer {
+    0%   { transform: translateX(-120%); }
+    55%  { transform: translateX(120%); }
+    100% { transform: translateX(120%); }
+  }
+  @keyframes ctaIdle {
+    0%,100% { transform: translate(0,0); }
+    25%     { transform: translate(0.4px, -0.4px); }
+    50%     { transform: translate(-0.3px, 0.4px); }
+    75%     { transform: translate(0.3px, 0.3px); }
+  }
+  @keyframes ctaTick {
+    0%,100% { opacity: 0; transform: scale(1); }
+    50%     { opacity: 0.6; transform: scale(1.04); }
+  }
+  .waitlist-form button:hover,
+  .businesses-cta:hover {
+    animation-duration: 0.3s;
+    letter-spacing: 0.12em;
+  }
+  .waitlist-form button:active,
+  .businesses-cta:active { transform: scale(0.96); }
+
+  /* Phone float + tilt */
+  .hero-screenshot { perspective: 1000px; }
+  .hero-screenshot img {
+    transition: transform 0.25s cubic-bezier(.2,.9,.3,1.2);
+    transform-style: preserve-3d;
+    will-change: transform;
+    animation: phoneFloat 5s ease-in-out infinite;
+  }
+  @keyframes phoneFloat {
+    0%,100% { translate: 0 0; }
+    50%     { translate: 0 -10px; }
+  }
+
+  /* Logo: RANK wobble on hover */
+  .logo span {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(.34,1.9,.64,1);
+  }
+  .logo:hover span { animation: wobble 0.6s ease; }
+  @keyframes wobble {
+    0%,100% { transform: rotate(0); }
+    20% { transform: rotate(-8deg) scale(1.1); }
+    40% { transform: rotate(6deg) scale(1.15); }
+    60% { transform: rotate(-4deg) scale(1.1); }
+    80% { transform: rotate(2deg) scale(1.05); }
+  }
+
+  /* Feature tile hover */
+  .feature { transition: background 0.2s, transform 0.3s cubic-bezier(.34,1.56,.64,1); }
+  .feature:hover { transform: translateY(-4px); }
+  .feature-icon { transition: transform 0.35s cubic-bezier(.34,1.9,.64,1); }
+  .feature:hover .feature-icon { transform: rotate(-8deg) scale(1.12); }
+
+  /* Step numbers */
+  .step-num { transition: transform 0.5s cubic-bezier(.34,1.9,.64,1), color 0.3s; }
+  .step:hover .step-num { transform: scale(1.15) rotate(-4deg); color: #ff3a2d; }
+
+  /* Image hover tilt + red glow */
+  .steps-images img, .businesses-images img, .community-img img {
+    transition: transform 0.5s cubic-bezier(.34,1.56,.64,1), box-shadow 0.4s;
+  }
+  .steps-images img:hover, .businesses-images img:hover, .community-img img:hover {
+    transform: translateY(-6px) rotate(-1.5deg) scale(1.02) !important;
+    box-shadow: 0 20px 50px rgba(232,39,26,0.25);
+  }
+
+  /* Section title accent — underline swipe */
+  .section-title.visible .accent {
+    background-image: linear-gradient(transparent 92%, rgba(232,39,26,0.4) 92%);
+    background-size: 0 100%;
+    background-repeat: no-repeat;
+    animation: underlineSwipe 0.9s 0.2s cubic-bezier(.65,0,.35,1) forwards;
+  }
+  @keyframes underlineSwipe { to { background-size: 100% 100%; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   .reveal {
     opacity: 0;
     transform: translateY(24px);
@@ -596,6 +795,8 @@
 </head>
 <body>
 
+<div class="redline" id="redline"></div>
+
 <nav>
   <a href="index.html" class="logo">Rev<span>Rank</span></a>
   <div class="nav-socials">
@@ -606,10 +807,17 @@
 
 <!-- HERO -->
 <div style="position: relative; overflow: hidden;">
+  <div class="speedlines" id="speedlines"></div>
   <div class="hero-bg-text">REV</div>
   <section class="hero" id="waitlist">
     <p class="hero-eyebrow">Coming soon &mdash; Join the waitlist</p>
-    <h1 class="hero-title">The <span class="accent">#1</span> Mod Discovery Platform.</h1>
+    <h1 class="hero-title">
+      <span class="word" style="animation-delay:.05s">The</span>
+      <span class="word accent-word" style="animation-delay:.2s">#1</span>
+      <span class="word" style="animation-delay:.35s">Mod</span>
+      <span class="word" style="animation-delay:.45s">Discovery</span>
+      <span class="word" style="animation-delay:.55s">Platform.</span>
+    </h1>
     <p class="hero-sub">Browse mods from different brands, see them on real builds, and buy. All in one place.</p>
 
     <form class="waitlist-form" onsubmit="handleWaitlist(event, 'hero-email', 'hero-success', 'hero-error')">
@@ -758,6 +966,67 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
   }, { threshold: 0.1 });
   reveals.forEach(r => observer.observe(r));
+
+  // ===== Redline scroll meter =====
+  const redline = document.getElementById('redline');
+  const updateRedline = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+    redline.style.setProperty('--scroll', pct + '%');
+  };
+  window.addEventListener('scroll', updateRedline, { passive: true });
+  updateRedline();
+
+  // ===== Speed lines =====
+  const sl = document.getElementById('speedlines');
+  if (sl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const spawnLine = () => {
+      const s = document.createElement('span');
+      s.style.top = (Math.random() * 100) + '%';
+      s.style.width = (80 + Math.random() * 240) + 'px';
+      const duration = 0.9 + Math.random() * 1.8;
+      s.style.animationDuration = duration + 's';
+      s.style.animationDelay = (Math.random() * 0.4) + 's';
+      sl.appendChild(s);
+      setTimeout(() => s.remove(), (duration + 0.6) * 1000);
+    };
+    setInterval(spawnLine, 600);
+    for (let i = 0; i < 4; i++) setTimeout(spawnLine, i * 180);
+  }
+
+  // ===== Phone tilt =====
+  const phoneWrap = document.querySelector('.hero-screenshot');
+  const phoneImg = phoneWrap && phoneWrap.querySelector('img');
+  if (phoneImg) {
+    phoneWrap.addEventListener('mousemove', (e) => {
+      const r = phoneWrap.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      phoneImg.style.transform = `rotateY(${x * 14}deg) rotateX(${-y * 14}deg) scale(1.03)`;
+    });
+    phoneWrap.addEventListener('mouseleave', () => { phoneImg.style.transform = ''; });
+  }
+
+  // ===== Watermark parallax =====
+  const bgTexts = document.querySelectorAll('.hero-bg-text');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    bgTexts.forEach((el) => {
+      const dir = el.classList.contains('left') ? 1 : -1;
+      el.style.marginLeft = (y * 0.15 * dir) + 'px';
+    });
+  }, { passive: true });
+
+  // ===== Magnetic CTAs =====
+  document.querySelectorAll('.waitlist-form button, .businesses-cta').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width / 2;
+      const y = e.clientY - r.top - r.height / 2;
+      btn.style.transform = `translate(${x * 0.12}px, ${y * 0.18}px)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+  });
 
   // Waitlist submit handler — both forms write to the same `waitlist` table
   async function handleWaitlist(e, inputId, successId, errorId) {
