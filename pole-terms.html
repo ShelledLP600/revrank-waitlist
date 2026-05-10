@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pole — Terms of Service</title>
+<meta name="description" content="Terms of Service for Pole, a lap time tracking app for real-track and sim racing. Read the rules for using the app, submitting laps, and account management.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #E8271A;
+    --red-dark: #B01E12;
+    --black: #0A0A0A;
+    --surface: #111111;
+    --border: rgba(255,255,255,0.08);
+    --text: #F0EDE8;
+    --muted: #888580;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.6;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--red); }
+
+  .nav-cta {
+    background: var(--red);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--red-dark); }
+
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 8rem 2rem 4rem;
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  .page-title .accent { color: var(--red); }
+
+  .effective-date {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 3rem;
+  }
+
+  .intro {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p, li {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1rem;
+  }
+
+  ul li {
+    padding-left: 1.25rem;
+    position: relative;
+  }
+
+  ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    width: 6px;
+    height: 6px;
+    background: var(--red);
+  }
+
+  .highlight-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box p {
+    margin-bottom: 0;
+  }
+
+  .contact-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .contact-box p { margin-bottom: 0.4rem; }
+
+  .contact-box a {
+    color: var(--red);
+    text-decoration: none;
+  }
+
+  .contact-box a:hover { text-decoration: underline; }
+
+  .inline-link {
+    color: var(--red);
+    text-decoration: none;
+  }
+
+  .inline-link:hover { text-decoration: underline; }
+
+  footer {
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  footer a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">Po<span>le</span></span>
+</nav>
+
+<div class="content">
+  <h1 class="page-title">Terms of <span class="accent">Service</span></h1>
+  <p class="effective-date">Last Updated: May 10, 2026</p>
+
+  <p class="intro">
+    These Terms of Service govern your use of Pole, a lap time tracking app for real-track and sim racing.
+    By creating an account or using Pole, you agree to these Terms and our
+    <a href="pole-privacy.html" class="inline-link">Privacy Policy</a>.
+    If you do not agree, do not use the app.
+  </p>
+
+  <h2>1. Acceptance of Terms</h2>
+  <p>By creating an account or using Pole, you agree to be bound by these Terms of Service and our <a href="pole-privacy.html" class="inline-link">Privacy Policy</a>.</p>
+
+  <h2>2. Account Requirements</h2>
+  <ul>
+    <li>You must be at least 13 years old to use Pole.</li>
+    <li>You must provide accurate and current information when creating your account.</li>
+    <li>You are responsible for keeping your account credentials secure and for any activity that occurs under your account.</li>
+  </ul>
+
+  <h2>3. Acceptable Use</h2>
+  <p>When using Pole, you agree that you will not:</p>
+  <ul>
+    <li>Submit fake lap times or fraudulent photos.</li>
+    <li>Submit photos that are not yours or are not related to the lap you are submitting.</li>
+    <li>Submit content that is illegal, harassing, defamatory, or that infringes anyone else's rights.</li>
+    <li>Attempt to circumvent verification, row-level security, or any other security measures in the app.</li>
+    <li>Spam track names, abuse the submission flow, or otherwise degrade the service for other users.</li>
+    <li>Use bots, scrapers, or other automated tools to access the app without our permission.</li>
+  </ul>
+
+  <h2>4. User Content</h2>
+  <p>You retain ownership of the photos and data you submit to Pole. By submitting content, you grant us a non-exclusive, worldwide, royalty-free license to display, store, and process that content as necessary to operate the app — including showing it on public leaderboards.</p>
+
+  <h2>5. Verification &amp; Moderation</h2>
+  <p>We reserve the right to review, reject, or remove any submission at our discretion. Rejected laps are hidden from leaderboards.</p>
+  <div class="highlight-box">
+    <p>We are not obligated to verify any specific lap within any specific timeframe. Verification happens when admins are available to review submissions.</p>
+  </div>
+
+  <h2>6. Account Termination</h2>
+  <p>We may suspend or delete accounts that violate these Terms, at our discretion and without prior notice. You may delete your account at any time by contacting us at the address below.</p>
+
+  <h2>7. Service Availability</h2>
+  <p>Pole is provided "as is." We do not guarantee uptime, the accuracy of any leaderboard, or that any specific feature will continue to exist. Features may change or be removed at any time.</p>
+
+  <h2>8. Disclaimers</h2>
+  <p>Pole and all content within it are provided "as is" and "as available," without warranties of any kind, express or implied. We disclaim all warranties, including warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that the app will be uninterrupted, error-free, or that lap submissions submitted by other users are accurate.</p>
+
+  <h2>9. Limitation of Liability</h2>
+  <p>To the fullest extent permitted by law, Pole and its operators shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the app.</p>
+  <p>Our total liability to you for any claim arising out of or relating to these Terms or the app shall not exceed the amount you have paid us to use Pole — which is zero, since the app is free.</p>
+
+  <h2>10. Governing Law</h2>
+  <p>These Terms are governed by the laws of [STATE/COUNTRY], without regard to its conflict of laws principles. You agree that any disputes will be resolved in the courts located in that jurisdiction.</p>
+
+  <h2>11. Changes to These Terms</h2>
+  <p>We may update these Terms from time to time. Material changes will be communicated in the app or by email. Continued use of Pole after changes are posted means you accept the updated Terms.</p>
+
+  <h2>12. Contact</h2>
+  <div class="contact-box">
+    <p><strong>Pole</strong></p>
+    <p>Email: <a href="mailto:kameronweddle@icloud.com">kameronweddle@icloud.com</a></p>
+    <p style="margin-top: 0.75rem;">See also: <a href="pole-privacy.html">Privacy Policy</a></p>
+  </div>
+</div>
+
+<footer>
+  <span class="logo" style="font-size: 1.1rem;">Po<span style="color: var(--red);">le</span></span>
+  <span>&copy; 2026 Pole. All rights reserved.</span>
+</footer>
+
+</body>
+</html>

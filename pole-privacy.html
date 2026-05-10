@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pole — Privacy Policy</title>
+<meta name="description" content="Privacy policy for Pole, a lap time tracking app for real-track and sim racing. Learn what data we collect, how we use it, and your rights.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #E8271A;
+    --red-dark: #B01E12;
+    --black: #0A0A0A;
+    --surface: #111111;
+    --border: rgba(255,255,255,0.08);
+    --text: #F0EDE8;
+    --muted: #888580;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.6;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--red); }
+
+  .nav-cta {
+    background: var(--red);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover { background: var(--red-dark); }
+
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 8rem 2rem 4rem;
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+  }
+
+  .page-title .accent { color: var(--red); }
+
+  .effective-date {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 3rem;
+  }
+
+  .intro {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p, li {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1rem;
+  }
+
+  ul li {
+    padding-left: 1.25rem;
+    position: relative;
+  }
+
+  ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    width: 6px;
+    height: 6px;
+    background: var(--red);
+  }
+
+  .highlight-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight-box p {
+    margin-bottom: 0;
+  }
+
+  .contact-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .contact-box p { margin-bottom: 0.4rem; }
+
+  .contact-box a {
+    color: var(--red);
+    text-decoration: none;
+  }
+
+  .contact-box a:hover { text-decoration: underline; }
+
+  .inline-link {
+    color: var(--red);
+    text-decoration: none;
+  }
+
+  .inline-link:hover { text-decoration: underline; }
+
+  footer {
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--muted);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  footer a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">Po<span>le</span></span>
+</nav>
+
+<div class="content">
+  <h1 class="page-title">Privacy <span class="accent">Policy</span></h1>
+  <p class="effective-date">Last Updated: May 10, 2026</p>
+
+  <p class="intro">
+    Pole is a lap time tracking app for real-track and sim racing.
+    This Privacy Policy explains what information we collect when you use Pole, how we use it, who we share it with, and the rights you have over your data.
+    By using Pole, you agree to the practices described here.
+  </p>
+
+  <h2>1. Information We Collect</h2>
+
+  <h3>Account Information</h3>
+  <ul>
+    <li><strong>Email address</strong> — used to sign you in and contact you about your account.</li>
+    <li><strong>Password</strong> — securely hashed and stored by our authentication provider, Supabase. We never see or store your plain-text password.</li>
+    <li><strong>Username</strong> — a display name you choose. Visible to other Pole users.</li>
+  </ul>
+
+  <h3>Lap Submissions</h3>
+  <ul>
+    <li><strong>Lap times</strong> you submit.</li>
+    <li><strong>Track names</strong> you race on.</li>
+    <li><strong>Car descriptions</strong> you provide for each lap.</li>
+    <li><strong>Real-track or sim flag</strong> indicating whether the lap was set on a real circuit or in a simulator.</li>
+  </ul>
+
+  <h3>Photos</h3>
+  <p>You upload a photo with each lap submission — typically a screenshot or photo of a timing display. We use these photos to verify lap legitimacy.</p>
+  <div class="highlight-box">
+    <p><strong>Photos are visible to anyone with the direct URL.</strong> Lap photos are stored on Supabase Storage and served via public URLs. Treat anything you upload as publicly accessible — do not include personal information you would not want shared.</p>
+  </div>
+
+  <h3>Technical Data</h3>
+  <ul>
+    <li>Device type and operating system version.</li>
+    <li>App version.</li>
+    <li>Crash logs and basic diagnostics, as is standard for any iOS app.</li>
+  </ul>
+
+  <h2>2. How We Use Your Information</h2>
+  <ul>
+    <li><strong>Display leaderboards.</strong> Lap times, usernames, track names, car descriptions, the sim/real flag, and lap photos are public to other Pole users.</li>
+    <li><strong>Verify lap submissions.</strong> Admins review submitted photos to confirm laps are legitimate.</li>
+    <li><strong>Operate your account.</strong> Sign-in, sign-out, profile management.</li>
+    <li><strong>Diagnose problems.</strong> Crash logs and technical data help us fix bugs and stability issues.</li>
+  </ul>
+
+  <h2>3. Third-Party Services</h2>
+  <p>We use the following services to operate Pole:</p>
+  <ul>
+    <li><strong>Supabase</strong> (United States) — authentication, database storage, and photo hosting. See <a href="https://supabase.com/privacy" class="inline-link" target="_blank" rel="noopener">Supabase's privacy policy</a>.</li>
+    <li><strong>Apple</strong> — App Store distribution and, where applicable, crash reporting through Apple's developer tools.</li>
+  </ul>
+
+  <h2>4. How We Share Your Information</h2>
+
+  <h3>Public-Facing Data</h3>
+  <p>By design, the following information is visible to all Pole users:</p>
+  <ul>
+    <li>Your username</li>
+    <li>Lap times</li>
+    <li>Track names</li>
+    <li>Car descriptions</li>
+    <li>Sim/real flag</li>
+    <li>Lap photos</li>
+  </ul>
+
+  <h3>Service Providers</h3>
+  <p>We share data with the third-party services listed above only as necessary to operate the app.</p>
+
+  <div class="highlight-box">
+    <p><strong>We do not sell your data.</strong> We do not sell, rent, or trade your personal information to third parties for marketing.</p>
+  </div>
+
+  <h3>Legal Requirements</h3>
+  <p>We may disclose information if required by law or in response to valid legal process.</p>
+
+  <h2>5. Data Retention</h2>
+  <p>We keep your account information and lap submissions for as long as your account exists. If you ask us to delete your account, we will remove your personal data within 30 days.</p>
+
+  <h2>6. Your Rights</h2>
+  <p>You can request to delete your account or export a copy of your data by emailing us at the address below. We will respond within 30 days.</p>
+
+  <h2>7. Children's Privacy</h2>
+  <p>Pole is not intended for users under the age of 13. We do not knowingly collect personal information from children under 13. If you believe a child under 13 has provided us with information, contact us and we will delete it.</p>
+
+  <h2>8. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. Material changes will be communicated in the app or by email. Continued use of Pole after changes are posted means you accept the updated policy.</p>
+
+  <h2>9. Contact</h2>
+  <div class="contact-box">
+    <p><strong>Pole</strong></p>
+    <p>Email: <a href="mailto:kameronweddle@icloud.com">kameronweddle@icloud.com</a></p>
+    <p style="margin-top: 0.75rem;">See also: <a href="pole-terms.html">Terms of Service</a></p>
+  </div>
+</div>
+
+<footer>
+  <span class="logo" style="font-size: 1.1rem;">Po<span style="color: var(--red);">le</span></span>
+  <span>&copy; 2026 Pole. All rights reserved.</span>
+</footer>
+
+</body>
+</html>
